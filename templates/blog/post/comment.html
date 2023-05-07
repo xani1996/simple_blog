@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+    اضافه کردن نظر
+{% endblock %}
+{% block content %}
+    {% if comment %}
+        <h2>کامنت شما با موفقیت ثبت شد</h2>
+        <p><a href="{{ post.get_absolute_url }}">برگشت به مقاله </a></p>
+    {% else %}
+        {% include 'blog/post/includes/comment_form.html' %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+{% load social_share %}
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+{% block content %}
+     <!--- Post body section --->
+    <h1>{{ post.title }}</h1>
+    <p class="post-meta">
+        منتشر شده توسط {{ post.author }} در تاریخ {{ post.jpublish }}
+    </p>
+    <p>{{ post.body|markdown }}</p>
+   <!--- Post share section --->
+    <div class="dropdown p-5">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">به اشتراک گذاری این پست
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu justify-content-center">
+            <li class="p-2">
+                <a href="#"><span class="nav-item">
+            {% post_to_telegram 'تلگرام {{ post.title }}' object_or_url '<i class="fa-brands fa-telegram fa-2x"></i>' %}
+            </span></a></li>
+            <li class="p-2">
+                <a href="#">
+                        <span class="nav-item">{% post_to_whatsapp 'واتس اپ {{ post.title }}' '<i class="fa-brands fa-whatsapp fa-2x"></i>' %}
+                        </span>
+                </a>
+            </li>
+            <li class="p-2">
+                <a href="{% url 'blog:post_share' post.id %}">
+                    اشراک گذاری با ایمیل
+                </a>
+            </li>
+        </ul>
+    </div>
+     <!--- Post similar section --->
+    <div class="card mb-4">
+        <div class="card-header">مقالات مشابه</div>
+        <div class="card-body">
+            <div class="row">
+                {% for post in similar_posts %}
+                    <p>
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </p>
+                {% empty %}
+                    پست و مقاله ای شبیه به این پست در حال حاضر در سایت وجود ندارد
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+     <!--- Post comment section --->
+    <div class="card mb-4 container">
+        {% with comments.count as total_comments %}
+            <div class="card-header"> {{ total_comments }} نظر</div>
+        {% endwith %}
+        {% for comment in comments %}
+            <div class="card-body">
+
+            <p> نظر{{ forloop.counter }} توسط {{ comment.name }}
+                {{ comment.jpublish }}
+            </p>
+            <p>
+                {{ comment.body|linebreaks }}
+            </p>
+
+        {% empty %}
+            <p> نظری وجود ندارد </p>
+        {% endfor %}
+        </div>
+
+    </div>
+    {% include "blog/post/includes/comment_form.html" %}
+
+{% endblock %}

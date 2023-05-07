@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+    اشتراک گذاری این پست
+{% endblock %}
+{% block content %}
+    <div class="my-5">
+        {% if sent %}
+            <h1>ایمیل شما با موفقیت ارسال شد </h1>
+            <p>"{{ post.title }}" با موفقیت ارسال شده به {{ form.cleaned_data.to }}</p>
+        {% else %}
+            <div class="container m-3">
+                <h1 class="p-5">به اشتراک گذاری {{ post.title }} از طریق ایمیل </h1>
+                <form id="contactForm" method="post">
+                    <div class="form-floating">
+                        {{ form.as_p }}
+                        {% csrf_token %}
+                        <input class="btn btn-primary" type="submit" value="ارسال " role="button">
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

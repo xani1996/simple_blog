@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+{% block title %}جست و جو{% endblock %}
+{% block content %}
+    <div class="my-5">
+        {% if query %}
+            <h1> مقالات حاوی " {{ query }}"</h1>
+            <h3>
+                {% with results.count as total_results %}
+                    پیدا شده {{ total_results }} نتیجه
+                {% endwith %}
+            </h3>
+            {% for post in results %}
+                <h4>
+                    <a href="{{ post.get_absolute_url }}">
+                        {{ post.title }}
+                    </a>
+                </h4>
+                {{ post.body|truncatewords_html:12 }}
+            {% empty %}
+                <p>جست و جو نتیجه ای نداشت </p>
+            {% endfor %}
+            <p><a href="{% url "blog:post_search" %}">جست و جو مجدد </a></p>
+        {% else %}
+            <h1>جست و جو برای مقالات</h1>
+            <form id="contactForm" method="get">
+                {{ form.as_p }}
+                <input type="submit" value="جست و جو">
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

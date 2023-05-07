@@ -1,0 +1,8 @@
+<div class="card-header"><h2>ثبت نظر </h2></div>
+ <div class="container m-3">
+    <form action="{% url 'blog:post_comment' post.id %}" method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <p><input class="btn btn-success" type="submit" value="ارسال نظر"></p>
+    </form>
+</div>
